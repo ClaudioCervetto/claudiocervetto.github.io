@@ -607,7 +607,7 @@
         <div class="project-content">
             
             <div class="stacked-section">
-                <img src="b1.webp" alt="Context Image" class="full-width-image" style="margin-bottom: 320px;">
+                <img src="../assets/img/b1.webp" alt="Context Image" class="full-width-image" style="margin-bottom: 320px;">
             </div>
 
             <div class="stacked-section content-row">
@@ -616,7 +616,7 @@
                     <p data-translate="txt-context">Nelle ore notturne, molto spesso le persone hanno la necessità di tornare a casa attraverso mezzi pubblici sicuri ma che sono assenti in molte città.</p>
                 </div>
                 <div class="image-wrapper">
-                    <img src="b2.webp" alt="Context Image">
+                    <img src="../assets/img/b2.webp" alt="Context Image">
                 </div>
             </div>
 
@@ -641,7 +641,7 @@
                     </div>
                 </div>
                 <div class="image-wrapper">
-                    <img src="b3.webp" alt="System Image">
+                    <img src="../assets/img/b3.webp" alt="System Image">
                 </div>
             </div>
 
@@ -659,7 +659,7 @@
                     </div>
                 </div>
                 <div class="image-wrapper lift-10">
-                    <img src="b4.webp" alt="Conviviality Image">
+                    <img src="../assets/img/b4.webp" alt="Conviviality Image">
                 </div>
                 <div class="text-block mobile-only" data-translate="txt-decision1-b" style="margin-bottom: 0; width: 100%; margin-top: 40px;">
                     <br><br>
@@ -702,7 +702,7 @@
                     </div>
                 </div>
                 <div class="image-wrapper">
-                    <img src="b6.webp" alt="Web App Image">
+                    <img src="../assets/img/b6.webp" alt="Web App Image">
                 </div>
             </div>
 
@@ -734,8 +734,8 @@
                     
                     <a href="woowe.html" target="_blank" class="work-item">
                         <div class="work-image-wrapper">
-                            <img src="woowe_cop1.webp" alt="Woowe Cover 1" class="work-img-1">
-                            <img src="woowe_cop2.webp" alt="Woowe Cover 2" class="work-img-2">
+                            <img src="../assets/img/woowe_cop1.webp" alt="Woowe Cover 1" class="work-img-1">
+                            <img src="../assets/img/woowe_cop2.webp" alt="Woowe Cover 2" class="work-img-2">
                         </div>
                         <div class="work-meta">
                             <div class="work-meta-row"><div class="work-title uppercase">WOOWE</div><div>2025</div></div>
@@ -745,8 +745,8 @@
         
                     <a href="awear.html" target="_blank" class="work-item">
                         <div class="work-image-wrapper">
-                            <img src="awear_cop1.webp" alt="Awear Cover 1" class="work-img-1">
-                            <img src="awear_cop2.webp" alt="Awear Cover 2" class="work-img-2">
+                            <img src="../assets/img/awear_cop1.webp" alt="Awear Cover 1" class="work-img-1">
+                            <img src="../assets/img/awear_cop2.webp" alt="Awear Cover 2" class="work-img-2">
                         </div>
                         <div class="work-meta">
                             <div class="work-meta-row"><div class="work-title uppercase">AWEAR</div><div>2025</div></div>
@@ -770,14 +770,8 @@
     <script>
         const videoElement = document.getElementById('project-video');
         const sourceElement = document.getElementById('video-source');
-        let selectedVideo = 'b5a.webm';
-        const connection = navigator.connection || navigator.mozConnection || navigator.webkitConnection;
-        if (connection && connection.downlink) {
-            if (connection.downlink > 10) {
-                selectedVideo = 'b5b.webm';
-            }
-        }
-        sourceElement.src = selectedVideo;
+
+        sourceElement.src = '../assets/img/b5a.webm';
         videoElement.load();
 
         let currentLanguage = 'ita';
