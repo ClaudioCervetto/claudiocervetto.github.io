@@ -3,14 +3,14 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Claudio Cervetto - UX and Brand Design</title>
+    <meta name="color-scheme" content="light">
+    <title>Claudio Cervetto - Product Designer</title>
     <link href="https://fonts.googleapis.com/css2?family=Azeret+Mono:wght@400;500;600;700&display=swap" rel="stylesheet">
     <style>
         * {
             margin: 0;
             padding: 0;
             box-sizing: border-box;
-            cursor: none !important;
         }
 
         :root {
@@ -18,7 +18,8 @@
             --text-color: #000000;
             --border-color: #000000;
             --text-muted: #cccccc;
-            --page-padding: 0px;
+            --accent-color: #00CED1;
+            color-scheme: light;
         }
 
         body {
@@ -29,1142 +30,452 @@
             overflow-x: hidden;
         }
 
-        .custom-cursor {
-            position: fixed;
-            width: 32px;
-            height: 32px;
-            border: 2px solid transparent;
-            border-radius: 50%;
-            pointer-events: none;
-            z-index: 9999;
-            transform: translate(-50%, -50%);
-            transition: border-color 0.2s;
-        }
-
-        .cursor-reveal {
-            position: fixed;
-            width: 32px;
-            height: 32px;
-            border-radius: 50%;
-            pointer-events: none;
-            z-index: 9998;
-            transform: translate(-50%, -50%);
-            overflow: hidden;
-            mix-blend-mode: difference;
-            background: white;
-        }
-
         .uppercase {
             text-transform: uppercase;
             letter-spacing: -0.02em;
         }
 
-        .hero {
-            position: relative;
-            height: 85vh;
-            overflow: hidden;
-            margin: 0;
-        }
-
-        .hero-image {
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
-        }
-
-        .hero-overlay {
-            position: absolute;
-            top: 0;
-            left: 0;
-            right: 0;
-            bottom: 0;
-            display: flex;
-            align-items: flex-end;
-            padding: 60px 20px 30px 20px;
-            background: linear-gradient(to top, rgba(0,0,0,0.4), transparent);
-        }
-
-        .hero-text {
-            color: white;
-            width: 100%;
-            display: flex;
-            justify-content: space-between;
-            align-items: flex-end;
-        }
-
-        .hero-title {
-            font-size: 2.5rem;
-            font-weight: 400;
-            line-height: 0.95;
-            letter-spacing: -0.02em;
-        }
-
-        .hero-subtitle {
-            font-size: 2.5rem;
-            font-weight: 400;
-            text-align: right;
-            line-height: 0.95;
-            letter-spacing: -0.02em;
-        }
-
-        .info-bar {
-            padding: 20px 20px 60px 20px;
-            display: flex;
-            justify-content: space-between;
-            flex-wrap: nowrap;
-            gap: 20px;
-            font-size: 1rem;
-        }
-
-        .info-item {
-            display: flex;
-            gap: 20px;
-            white-space: nowrap;
-        }
-
-        .info-label {
-            font-weight: 400;
-            text-transform: lowercase;
-            letter-spacing: -0.02em;
-        }
-
+        /* --- NAVIGATION --- */
         nav {
+            position: fixed;
+            top: 0;
+            width: 100%;
             padding: 15px 20px;
             display: flex;
             justify-content: space-between;
             align-items: center;
-        }
-
-        .nav-sticky {
-            position: fixed;
-            top: 0;
-            left: 0;
-            right: 0;
-            background: #fff;
-            color: #000;
+            background: var(--bg-color);
             z-index: 1000;
-            transform: translateY(-100%);
-            transition: transform 0.3s ease;
+            opacity: 0;
+            transform: translateY(8px);
+            transition: opacity 0.8s ease, transform 0.8s ease;
         }
 
-        .nav-sticky.visible {
-            transform: translateY(0);
-        }
+        nav.visible { opacity: 1; transform: translateY(0); }
 
-        .nav-sticky .nav-links a {
-            color: #000;
-        }
+        .nav-right { display: flex; align-items: center; gap: 40px; }
 
-        .nav-links {
-            display: flex;
-            gap: 30px;
-            list-style: none;
-        }
+        .language-selector { font-size: 1rem; letter-spacing: -0.02em; display: flex; gap: 5px; font-weight: 500; }
+        .language-selector span { cursor: pointer; transition: opacity 0.3s; position: relative; display: inline-block; overflow: hidden; }
+        .language-selector span .lang-text { display: inline-block; transition: transform 0.3s ease; }
+        .language-selector span::before { content: attr(data-text); position: absolute; top: 100%; left: 0; transform: translateY(0); transition: transform 0.3s ease; }
+        .language-selector span:hover .lang-text { transform: translateY(-100%); }
+        .language-selector span:hover::before { transform: translateY(-100%); }
+        .language-selector .active { font-weight: 500; }
+        .language-separator { opacity: 0.3; }
 
-        .nav-links a {
-            color: var(--text-color);
-            text-decoration: none;
-            font-size: 1rem;
-            transition: opacity 0.3s;
-            letter-spacing: -0.02em;
-        }
+        .nav-copyright { letter-spacing: -0.03em; font-weight: 500; position: relative; top: -4px; }
 
-        .nav-links a:hover {
-            opacity: 0.6;
-        }
+        .nav-links { display: flex; gap: 15px; list-style: none; }
+        .nav-links a { color: var(--text-color); text-decoration: none; font-size: 1rem; font-weight: 500; position: relative; display: inline-block; overflow: hidden; cursor: pointer; }
+        .nav-links a span { display: inline-block; transition: transform 0.3s ease; }
+        .nav-links a::before { content: attr(data-text); position: absolute; top: 100%; left: 0; transition: transform 0.3s ease; }
+        .nav-links a:hover span { transform: translateY(-100%); }
+        .nav-links a:hover::before { transform: translateY(-100%); }
 
-        .container {
+        /* --- HERO SECTION --- */
+        .hero-section {
+            min-height: 100vh;
             padding: 150px 20px 60px 20px;
-            max-width: none;
-            margin: 0;
-        }
-
-        .section {
-            margin-bottom: 100px;
-        }
-
-        .section-header {
             display: flex;
-            justify-content: space-between;
             align-items: center;
-            margin-bottom: 30px;
+            justify-content: center;
         }
 
-        #about .section-header {
-            margin-bottom: 15px;
-        }
-
-        #service .section-header {
-            margin-bottom: 15px;
-        }
-
-        .section-title {
-            font-size: 2.5rem;
-            font-weight: 700;
-            letter-spacing: -0.02em;
-        }
-
-        .section-number {
-            font-size: 2rem;
-            font-weight: 700;
-            opacity: 0.3;
-            letter-spacing: -0.02em;
-        }
-
-        .about-content {
+        .hero-container {
+            width: 100%;
             display: flex;
             flex-direction: column;
-            gap: 120px;
-        }
-
-        .about-text {
-            font-size: 1rem;
-            line-height: 1.5;
-            max-width: 500px;
-            width: 100%;
-            color: var(--text-color);
-            letter-spacing: -0.03em;
-        }
-
-        .experience-section {
-            width: 100%;
-        }
-
-        .experience-title-header {
-            font-size: 1.3rem;
-            font-weight: 400;
-            margin-bottom: 50px;
-            letter-spacing: -0.02em;
-        }
-
-        .experience-list {
-            display: flex;
-            flex-direction: column;
-            gap: 50px;
-        }
-
-        .experience-item-new {
-            display: grid;
-            grid-template-columns: 220px 1px 2fr 1px 1fr;
-            gap: 25px;
-            align-items: start;
-            transition: color 0.3s ease;
-            color: var(--text-muted);
-            position: relative;
-        }
-
-        .experience-item-new::before {
-            content: '';
-            position: absolute;
-            top: calc(1.05rem + 8px + 4px);
-            left: 0;
-            right: 0;
-            height: 1px;
-            background-color: var(--border-color);
-            transition: background-color 0.3s ease;
-        }
-
-        .experience-item-new.active {
-            color: var(--text-color);
-        }
-
-        .experience-item-new.active::before {
-            background-color: var(--text-color);
-        }
-
-        .experience-item-new.active .experience-date-new,
-        .experience-item-new.active .experience-role,
-        .experience-item-new.active .experience-description,
-        .experience-item-new.active .experience-company-new {
-            color: var(--text-color);
-        }
-
-        .experience-date-new {
-            font-size: 0.95rem;
-            color: inherit;
-            letter-spacing: -0.02em;
-        }
-
-        .experience-divider {
-            width: 1px;
-            height: 50px;
-            position: relative;
-            background: transparent;
-        }
-
-        .experience-divider::before {
-            content: '';
-            position: absolute;
-            top: 13px;
-            left: 0;
-            width: 1px;
-            height: 8px;
-            background-color: var(--border-color);
-        }
-
-        .experience-divider::after {
-            content: '';
-            position: absolute;
-            bottom: 6px;
-            left: 0;
-            width: 1px;
-            height: 8px;
-            background-color: var(--border-color);
-        }
-
-        .experience-details {
-            display: flex;
-            flex-direction: column;
-            gap: 2px;
-        }
-
-        .experience-role {
-            font-size: 1.05rem;
-            font-weight: 400;
-            color: inherit;
-            padding-bottom: 8px;
-            letter-spacing: -0.02em;
-        }
-
-        .experience-description {
-            font-size: 0.95rem;
-            line-height: 1.4;
-            color: inherit;
-            max-width: 600px;
-            width: 100%;
-            letter-spacing: -0.03em;
-        }
-
-        .experience-company-new {
-            font-size: 1.05rem;
-            color: inherit;
-            text-align: left;
-            letter-spacing: -0.02em;
-        }
-
-        .works-category {
-            margin-bottom: 60px;
-        }
-
-        .works-category:last-child {
-            margin-bottom: 0;
-        }
-
-        .category-title {
-            font-size: 1.3rem;
-            font-weight: 400;
-            margin-bottom: 20px;
-            letter-spacing: -0.02em;
-            text-transform: lowercase;
-        }
-
-        .works-grid {
-            display: grid;
-            grid-template-columns: repeat(3, 1fr);
-            gap: 0;
-            border-left: 1px solid var(--border-color);
-        }
-
-        .work-item {
-            transition: opacity 0.3s;
-            border-right: 1px solid var(--border-color);
-            border-bottom: 1px solid var(--border-color);
-        }
-
-        .work-item:hover {
-            opacity: 0.7;
-        }
-
-        .work-image {
-            width: 100%;
-            aspect-ratio: 1;
-            background: #333;
-            object-fit: cover;
-        }
-
-        .work-meta {
-            padding: 20px;
-            display: flex;
-            flex-direction: column;
-            gap: 10px;
-            font-size: 0.85rem;
-        }
-
-        .work-meta-row {
-            display: flex;
-            justify-content: space-between;
-        }
-
-        .work-title {
-            font-weight: 700;
-            letter-spacing: -0.02em;
-        }
-
-        .service-content {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
+            align-items: center;
             gap: 60px;
         }
 
-        .service-content > div:first-child {
-            order: 1;
-        }
-
-        .service-content > div:last-child {
-            order: 2;
-        }
-
-        @media (max-width: 1100px) {
-            .service-content {
-                grid-template-columns: 1fr;
-            }
-            
-            .service-content > div:first-child {
-                order: 1;
-            }
-
-            .service-content > div:last-child {
-                order: 2;
-            }
-        }
-
-        .service-intro {
-            margin-bottom: 40px;
-            font-size: 1rem;
-            line-height: 1.5;
-            max-width: 60%;
-            letter-spacing: -0.03em;
-        }
-
-        .service-list {
-            list-style: none;
-            font-size: 0.95rem;
-            line-height: 1.2;
-            text-align: left;
-            padding-left: 0;
-            margin-top: 180px;
-            margin-left: 0;
-            letter-spacing: -0.02em;
-            font-weight: 600;
-        }
-
-        @media (min-width: 1400px) {
-            .service-list {
-                margin-left: -80px;
-            }
-        }
-
-        @media (max-width: 900px) {
-            nav span:first-child,
-            .nav-sticky span:first-child {
-                display: none;
-            }
-            
-            .service-list {
-                margin-top: 40px;
-            }
-        }
-
-        .specialization {
-            padding-top: 180px;
-        }
-
-        .specialization-title {
-            font-size: 1.3rem;
-            font-weight: 400;
-            margin-bottom: 20px;
-            letter-spacing: -0.02em;
-            text-transform: lowercase;
-        }
-
-        .specialization-text {
-            font-size: clamp(2.5rem, 12vw, 8rem);
+        .hero-name {
+            font-size: clamp(2.8rem, 7.5vw, 5rem);
             font-weight: 700;
-            line-height: 0.85;
-            letter-spacing: -0.01em;
-        }
-
-        .specialization-line {
-            display: inline-block;
-            opacity: 0;
-            transform: translateY(100px);
-            transition: opacity 0.8s ease, transform 0.8s ease;
-        }
-
-        .specialization-line.visible {
-            opacity: 1;
-            transform: translateY(0);
-        }
-
-        .footer {
-            background: #000;
-            color: #fff;
-            border-top: 2px solid #000;
-            padding: 400px 20px 20px 20px;
-        }
-
-        .footer-content {
-            width: 100%;
-            max-width: none;
-            margin: 0;
-        }
-
-        .footer-cta-section {
-            margin-bottom: 80px;
-        }
-
-        .footer-cta {
-            font-size: 0.9rem;
+            line-height: 0.95;
+            letter-spacing: -0.08em;
             margin-bottom: 5px;
+            white-space: nowrap;
+            position: relative;
+            top: -50px;
         }
 
-        .footer-email {
-            font-size: 2rem;
-            font-weight: 700;
-            word-break: break-all;
-            letter-spacing: -0.02em;
+        .hero-title {
+            font-size: clamp(2.8rem, 7.5vw, 5rem);
+            font-weight: 400;
+            line-height: 0.95;
+            letter-spacing: -0.08em;
+            position: relative;
+            top: -35px;
+            color: var(--accent-color);
         }
 
-        .footer-brand {
-            font-size: clamp(3rem, 20vw, 21rem);
-            font-weight: 700;
-            line-height: 1;
-            margin-bottom: 80px;
-            letter-spacing: -0.02em;
+        .hero-left {
             opacity: 0;
-            transform: translateY(100px);
+            transform: translateY(-8px);
+            transition: opacity 0.8s ease, transform 0.8s ease;
+            align-self: flex-start;
+        }
+
+        .hero-left.visible { opacity: 1; transform: translateY(0); }
+
+        .hero-right {
+            display: flex;
+            flex-direction: row;
+            gap: 60px;
+            align-items: flex-end;
+            justify-content: center;
+            width: 100%;
+        }
+
+        .hero-image {
+            width: 360px;
+            height: 360px;
+            overflow: hidden;
+            flex-shrink: 0;
+            position: relative;
+            left: 50px;
+            opacity: 0;
+            transform: translateY(8px);
+            transition: opacity 0.8s ease, transform 0.8s ease, width 0.5s ease, height 0.5s ease;
+        }
+
+        .hero-image.visible { opacity: 1; transform: translateY(0); }
+        .hero-image img { width: 100%; height: 100%; object-fit: cover; }
+
+        .hero-description {
+            font-size: 23.814pt;
+            line-height: 1.5;
+            letter-spacing: -0.06em;
+            max-width: 600px;
+            text-align: left;
+            position: relative;
+            left: 120px;
+            top: 10px;
+            opacity: 0;
+            transform: translateY(-8px);
             transition: opacity 0.8s ease, transform 0.8s ease;
         }
 
-        .footer-brand.visible {
-            opacity: 1;
-            transform: translateY(0);
+        .hero-description.visible { opacity: 1; transform: translateY(0); }
+        .hero-description .no-wrap { white-space: nowrap; }
+
+        /* --- WORKS GRID --- */
+        .section { margin-bottom: 45px; padding: 0 20px; margin-top: 250px; }
+        .section-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; }
+        .section-title { font-size: 2.5rem; font-weight: 700; color: var(--accent-color); }
+
+        /* Grid Layout */
+        .works-grid { 
+            display: grid; 
+            grid-template-columns: repeat(3, 1fr); 
+            gap: 0; /* Rimosso gap per unire i bordi se necessario, ma qui useremo bordi su wrapper */
+            /* Rimosso border-left globale per gestire bordi specifici sulle card */
+        }
+        
+        .work-item { 
+            text-decoration: none; 
+            color: var(--text-color); 
+            display: block; 
+            /* Rimosso border-right e bottom globali per controllo preciso */
+            position: relative;
+        }
+        
+        /* Contenitore Immagini e Bordi */
+        .work-image-wrapper { 
+            width: 100%; 
+            aspect-ratio: 4 / 3; 
+            position: relative;
+            overflow: hidden;
+            
+            /* BORDI: Inizialmente bianchi, diventano neri all'hover */
+            border: 1px solid #ffffff; 
+            transition: border-color 0.25s ease;
+        }
+        
+        .work-item:hover .work-image-wrapper {
+            border-color: #000000;
         }
 
-        .footer-info {
-            display: flex;
-            justify-content: space-between;
-            flex-wrap: wrap;
-            gap: 20px;
-            font-size: 0.85rem;
-            margin-top: 0;
-            margin-bottom: 40px;
+        /* Gestione Immagini Sovrapposte */
+        .work-img-1, .work-img-2 {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            position: absolute;
+            top: 0;
+            left: 0;
+            transition: opacity 0.25s ease;
         }
 
-        .footer-info .info-label {
-            color: #fff;
+        /* Logica Desktop: Default vedi cop1 (img-1), cop2 nascosta */
+        .work-img-1 { opacity: 1; z-index: 1; }
+        .work-img-2 { opacity: 0; z-index: 2; }
+
+        /* All'hover su Desktop: nascondi cop1, mostra cop2 */
+        .work-item:hover .work-img-1 { opacity: 0; }
+        .work-item:hover .work-img-2 { opacity: 1; }
+        
+        /* Meta Data (Testo) */
+        .work-meta { 
+            padding: 10px; 
+            display: flex; 
+            flex-direction: column; 
+            font-size: 0.85rem; 
+            /* Aggiungo bordo inferiore al testo per mantenere la griglia visuale se desiderato, 
+               ma la richiesta specifica bordi sull'immagine. Lascio pulito il testo. */
+            border-bottom: 1px solid transparent; 
         }
+        .work-meta-row { display: flex; justify-content: space-between; }
+        .work-meta-row:nth-child(2) { justify-content: flex-end; text-align: right; }
 
-        .footer-copyright {
-            font-size: 0.85rem;
-            color: #fff;
-            text-align: left;
-            margin-top: 0;
-            margin-bottom: 0;
-        }
+        /* --- FOOTER --- */
+        .footer { padding: 30px 20px 20px 20px; }
+        .footer-contact-info { font-size: 0.85rem; line-height: 1.3; margin-bottom: 20px; }
+        .footer-copyright { font-size: 0.75rem; color: #999999; }
 
-        @media (max-width: 1200px) {
-            .info-bar {
-                display: none;
-            }
-        }
+/* --- BREAKPOINT 1650px --- */
+@media (max-width: 1650px) and (min-width: 1025px) {
+    .hero-container { align-items: flex-start; }
+    .hero-right { flex-direction: column; gap: 30px; align-items: stretch; width: 100%; }
+    .hero-image { left: 0; width: 100%; height: auto; aspect-ratio: 2 / 1; }
+    .hero-description { left: 0; max-width: 100%; }
+    .hero-description span[data-lang="hero-desc-2"] { display: block; }
+}
 
-        @media (max-width: 1024px) {
-            .experience-item-new {
-                grid-template-columns: 200px 1px 2fr 1px 1fr;
-                gap: 20px;
-            }
-        }
+/* --- BREAKPOINT TABLET & MOBILE (Max 1024px) --- */
+@media (max-width: 1024px) {
+    /* Layout Hero */
+    .hero-container { align-items: flex-start; }
+    .hero-right { flex-direction: column; gap: 30px; align-items: stretch; width: 100%; }
+    .hero-image { left: 0; width: 100%; height: auto; aspect-ratio: 2 / 1; }
+    .hero-description { left: 0; max-width: 100%; }
+    .hero-description span[data-lang="hero-desc-2"] { display: block; }
 
-        @media (max-width: 768px) {
-            .custom-cursor, .cursor-reveal {
-                display: none;
-            }
+    /* Griglia Tablet: 2 colonne */
+    .works-grid { grid-template-columns: repeat(2, 1fr); gap: 20px; }
+    .work-item { margin-bottom: 20px; }
 
-            * {
-                cursor: auto !important;
-            }
+    /* LOGICA IMMAGINI TABLET/MOBILE: Sempre Cop2 */
+    .work-img-1 { display: none; } /* Nascondi cop1 */
+    .work-img-2 { opacity: 1; position: relative; } /* Mostra cop2 statica */
 
-            .hero {
-                height: 60vh;
-            }
+    /* LOGICA BORDI TABLET/MOBILE: Sempre Neri */
+    .work-image-wrapper { border-color: #000000; }
+}
 
-            .hero-text {
-                flex-direction: column;
-                align-items: flex-start;
-                gap: 20px;
-            }
+/* --- MOBILE OPTIMIZATIONS (Max 850px) --- */
+@media (max-width: 850px) {
+    nav { padding: 10px 5%; }
+    .nav-copyright { display: none; }
+    
+    .nav-right { width: 100%; display: flex; justify-content: space-between; align-items: center; gap: 0; }
+    
+    .language-selector { font-size: 0.85rem; gap: 3px; }
+    .nav-links { display: flex; gap: 15px; }
+    .nav-links a { font-size: 0.85rem; }
+    
+    .hero-section { padding: 80px 5% 40px 5%; min-height: auto; }
+    .hero-container { gap: 30px; align-items: flex-start; width: 100%; }
+    
+    .hero-name, .hero-title { font-size: 9.8vw; width: 100%; line-height: 1; text-align: left; position: static; }
+    .hero-right { width: 100%; flex-direction: column; align-items: flex-start; gap: 30px; }
 
-            .hero-title, .hero-subtitle {
-                font-size: 2rem;
-                text-align: left;
-            }
+    .hero-image { width: 100% !important; max-width: 100% !important; height: auto; aspect-ratio: 3 / 4; position: static; left: 0; }
+    
+    .hero-description { width: 100%; max-width: 100%; font-size: 1.2rem; line-height: 1.5; text-align: left; position: static; }
+    .hero-description span { display: inline !important; white-space: normal !important; }
+    .hero-description .no-wrap { white-space: normal !important; }
+    
+    /* Griglia Mobile: 1 colonna */
+    .works-grid { grid-template-columns: 1fr; gap: 30px; }
+    
+    .section { padding: 0 5%; margin-top: 80px; }
+    .footer { padding: 25px 5% 18px 5%; }
+}
 
-            nav {
-                padding: 15px 20px;
-                background: #fff;
-                color: #000;
-            }
-
-            nav .nav-links {
-                gap: 12px;
-            }
-
-            nav .nav-links a {
-                font-size: 1rem;
-                color: #000;
-            }
-
-            .nav-sticky {
-                background: #fff;
-                color: #000;
-            }
-
-            .nav-sticky .nav-links {
-                gap: 12px;
-            }
-
-            .nav-sticky .nav-links a {
-                font-size: 1rem;
-                color: #000;
-            }
-
-            .container {
-                padding: 80px 20px 60px 20px;
-            }
-
-            .section-header {
-                margin-bottom: 20px;
-            }
-
-            .about-content {
-                gap: 60px;
-            }
-
-            .experience-item-new {
-                grid-template-columns: 1fr;
-                gap: 15px;
-            }
-
-            .experience-role::after {
-                left: 0;
-                right: 0;
-            }
-
-            .experience-divider {
-                display: none;
-            }
-
-            .experience-divider::before,
-            .experience-divider::after {
-                display: none;
-            }
-
-            .experience-company-new {
-                text-align: left;
-            }
-
-            .service-content {
-                grid-template-columns: 1fr;
-            }
-
-            .service-intro {
-                max-width: 100%;
-            }
-
-            .service-list {
-                margin-left: 0;
-                margin-top: 40px;
-            }
-
-            .works-grid {
-                grid-template-columns: 1fr;
-            }
-
-            .footer {
-                padding: 150px 20px 20px 20px;
-            }
-
-            .footer-info {
-                display: none;
-            }
-        }
+/* EXTRA SMALL SCREENS (480px) */
+@media (max-width: 480px) {
+    nav { padding: 8px 5%; }
+    .nav-links { gap: 10px; }
+    .hero-name, .hero-title { font-size: 9.5vw; }
+    .hero-section { padding: 70px 5% 40px 5%; }
+    .hero-description { font-size: 1.1rem; }
+}
     </style>
 </head>
 <body>
-    <div class="custom-cursor"></div>
-    <div class="cursor-reveal"></div>
+    <nav>
+        <span class="nav-copyright">©2026 Claudio Cervetto</span>
+        <div class="nav-right">
+            <div class="language-selector">
+                <span class="lang-ita active" onclick="switchLanguage('ita')" data-text="Ita"><span class="lang-text">Ita</span></span>
+                <span class="language-separator">/</span>
+                <span class="lang-eng" onclick="switchLanguage('eng')" data-text="Eng"><span class="lang-text">Eng</span></span>
+            </div>
+            <ul class="nav-links">
+                <li><a href="#home" data-text="Home"><span data-lang="nav-home">Home</span></a></li>
+                <li><a href="about.html" data-text="About"><span data-lang="nav-about">About</span></a></li>
+                <li><a href="#works" data-text="Lavori"><span data-lang="nav-works">Lavori</span></a></li>
+                <li><a href="#contact" data-text="Contatti"><span data-lang="nav-contact">Contatti</span></a></li>
+            </ul>
+        </div>
+    </nav>
 
-    <section class="hero" id="home">
-        <img src="assets/img/fotoprofilo.jpg" alt="Portrait" class="hero-image">
-        <div class="hero-overlay">
-            <div class="hero-text">
-                <h1 class="hero-title uppercase">Claudio<br>Cervetto</h1>
-                <h2 class="hero-subtitle uppercase">UX and<br>Brand Design</h2>
+    <section id="home" class="hero-section">
+        <div class="hero-container">
+            <div class="hero-left">
+                <h1 class="hero-name uppercase">CLAUDIO CERVETTO</h1>
+                <h2 class="hero-title">Product Designer</h2>
+            </div>
+            <div class="hero-right">
+                <div class="hero-image">
+                    <img src="foto-profilo.webp" alt="Claudio Cervetto">
+                </div>
+                <p class="hero-description">
+                    <span class="no-wrap" data-lang="hero-desc-1">Specializzato in web application complesse</span> <span data-lang="hero-desc-2">e sistemi di prodotto.</span>
+                </p>
             </div>
         </div>
     </section>
 
-    <div class="info-bar">
-        <div class="info-item">
-            <span class="info-label">social:</span>
-            <span>Instagram<br>LinkedIn</span>
+    <section id="works" class="section">
+        <div class="section-header">
+            <h2 class="section-title uppercase" data-lang="section-works">Lavori</h2>
         </div>
-        <div class="info-item">
-            <span class="info-label">location:</span>
-            <span>Italy, Roma<br><span class="time-display">19:29:31</span></span>
-        </div>
-        <div class="info-item">
-            <span class="info-label">available:</span>
-            <span>09 September<br>12 october</span>
-        </div>
-        <div class="info-item">
-            <span class="info-label">expertise:</span>
-            <span>Design<br>Web development</span>
-        </div>
-    </div>
-
-    <nav id="mainNav">
-        <span>© 2025 claudio cervetto</span>
-        <ul class="nav-links">
-            <li><a href="#home">home</a></li>
-            <li><a href="#about">about</a></li>
-            <li><a href="#works">works</a></li>
-            <li><a href="#service">service</a></li>
-            <li><a href="#contact">contact</a></li>
-        </ul>
-    </nav>
-
-    <nav class="nav-sticky" id="stickyNav">
-        <span>© 2025 claudio cervetto</span>
-        <ul class="nav-links">
-            <li><a href="#home">home</a></li>
-            <li><a href="#about">about</a></li>
-            <li><a href="#works">works</a></li>
-            <li><a href="#service">service</a></li>
-            <li><a href="#contact">contact</a></li>
-        </ul>
-    </nav>
-
-    <div class="container">
-        <section id="about" class="section">
-            <div class="section-header">
-                <h2 class="section-title uppercase">About</h2>
-                <span class="section-number uppercase">S01</span>
-            </div>
-            <div class="about-content">
-                <div class="about-text">
-                    As a digital designer, my work bridges creativity and technology to craft compelling and functional digital experiences. With a deep understanding of user-centric design, I specialize in creating visually stunning websites, interactive platforms, and branding assets that not only captivate but also engage audiences.
-                </div>
-                
-                <div class="experience-section">
-                    <h3 class="experience-title-header">Expirience</h3>
-                    <div class="experience-list">
-                        <div class="experience-item-new">
-                            <div class="experience-date-new">01.2022 / 08.2022</div>
-                            <div class="experience-divider"></div>
-                            <div class="experience-details">
-                                <div class="experience-role uppercase">Junior Designer</div>
-                                <div class="experience-description">Assists senior designers with basic design tasks, asset creation, and layout adjustments while learning design tools and processes.</div>
-                            </div>
-                            <div class="experience-divider"></div>
-                            <div class="experience-company-new uppercase">Freelance</div>
-                        </div>
-
-                        <div class="experience-item-new">
-                            <div class="experience-date-new">09.2022 / 02.2023</div>
-                            <div class="experience-divider"></div>
-                            <div class="experience-details">
-                                <div class="experience-role uppercase">Web Designer</div>
-                                <div class="experience-description">Designs website layouts, creates responsive designs, and ensures the user experience is visually appealing and functional across devices.</div>
-                            </div>
-                            <div class="experience-divider"></div>
-                            <div class="experience-company-new uppercase">Ultimma</div>
-                        </div>
-
-                        <div class="experience-item-new">
-                            <div class="experience-date-new">04.2023 / 12.2023</div>
-                            <div class="experience-divider"></div>
-                            <div class="experience-details">
-                                <div class="experience-role uppercase">UI Designer</div>
-                                <div class="experience-description">Focuses on designing user-friendly interfaces, creating wireframes, and ensuring seamless user interaction through visual components.</div>
-                            </div>
-                            <div class="experience-divider"></div>
-                            <div class="experience-company-new uppercase">Holper Agency</div>
-                        </div>
-
-                        <div class="experience-item-new">
-                            <div class="experience-date-new">01.2024 / 07.2024</div>
-                            <div class="experience-divider"></div>
-                            <div class="experience-details">
-                                <div class="experience-role uppercase">Product Designer</div>
-                                <div class="experience-description">Oversees the entire product design process, from concept to execution, ensuring usability, aesthetics, and alignment with business goals.</div>
-                            </div>
-                            <div class="experience-divider"></div>
-                            <div class="experience-company-new uppercase">Tireno Corp.</div>
-                        </div>
-
-                        <div class="experience-item-new">
-                            <div class="experience-date-new">08.2024 / Present</div>
-                            <div class="experience-divider"></div>
-                            <div class="experience-details">
-                                <div class="experience-role uppercase">Art Derector</div>
-                                <div class="experience-description">Leads creative teams, overseeing the visual direction of projects, ensuring design standards, and aligning creative solutions with strategic goals.</div>
-                            </div>
-                            <div class="experience-divider"></div>
-                            <div class="experience-company-new uppercase">Gallo Studio</div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </section>
-
-        <section id="works" class="section">
-            <div class="section-header">
-                <h2 class="section-title uppercase">Works</h2>
-                <span class="section-number uppercase">S02</span>
-            </div>
+        <div class="works-grid">
             
-            <div class="works-category">
-                <h3 class="category-title">brand design</h3>
-                <div class="works-grid">
-                    <div class="work-item">
-                        <div class="work-image" style="background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);"></div>
-                        <div class="work-meta">
-                            <div class="work-meta-row">
-                                <div class="work-title uppercase">Web design, identity</div>
-                                <div>2024</div>
-                            </div>
-                            <div class="work-meta-row">
-                                <div class="work-title uppercase">Opollo</div>
-                                <div>E-commerce</div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="work-item">
-                        <div class="work-image" style="background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);"></div>
-                        <div class="work-meta">
-                            <div class="work-meta-row">
-                                <div class="work-title uppercase">Web design, identity</div>
-                                <div>2024</div>
-                            </div>
-                            <div class="work-meta-row">
-                                <div class="work-title uppercase">Mexxis</div>
-                                <div>Brand</div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="work-item">
-                        <div class="work-image" style="background: linear-gradient(135deg, #fa709a 0%, #fee140 100%);"></div>
-                        <div class="work-meta">
-                            <div class="work-meta-row">
-                                <div class="work-title uppercase">Identity</div>
-                                <div>2024</div>
-                            </div>
-                            <div class="work-meta-row">
-                                <div class="work-title uppercase">Tricamarum</div>
-                                <div>Fashion</div>
-                            </div>
-                        </div>
-                    </div>
+            <a href="woowe.html" target="_blank" class="work-item">
+                <div class="work-image-wrapper">
+                    <img src="woowe_cop1.webp" alt="Woowe Cover 1" class="work-img-1">
+                    <img src="woowe_cop2.webp" alt="Woowe Cover 2" class="work-img-2">
                 </div>
-            </div>
+                <div class="work-meta">
+                    <div class="work-meta-row"><div class="work-title uppercase">WOOWE</div><div>2025</div></div>
+                    <div class="work-meta-row"><div>Behavior Design</div></div>
+                </div>
+            </a>
 
-            <div class="works-category">
-                <h3 class="category-title">ux design</h3>
-                <div class="works-grid">
-                    <div class="work-item">
-                        <div class="work-image" style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);"></div>
-                        <div class="work-meta">
-                            <div class="work-meta-row">
-                                <div class="work-title uppercase">Web design, identity</div>
-                                <div>2024</div>
-                            </div>
-                            <div class="work-meta-row">
-                                <div class="work-title uppercase">Qollo</div>
-                                <div>E-commerce</div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="work-item">
-                        <div class="work-image" style="background: linear-gradient(135deg, #30cfd0 0%, #330867 100%);"></div>
-                        <div class="work-meta">
-                            <div class="work-meta-row">
-                                <div class="work-title uppercase">Web design</div>
-                                <div>2023</div>
-                            </div>
-                            <div class="work-meta-row">
-                                <div class="work-title uppercase">Project</div>
-                                <div>Type</div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="work-item">
-                        <div class="work-image" style="background: linear-gradient(135deg, #a8edea 0%, #fed6e3 100%);"></div>
-                        <div class="work-meta">
-                            <div class="work-meta-row">
-                                <div class="work-title uppercase">Web design</div>
-                                <div>2023</div>
-                            </div>
-                            <div class="work-meta-row">
-                                <div class="work-title uppercase">Project</div>
-                                <div>Type</div>
-                            </div>
-                        </div>
-                    </div>
+            <a href="awear.html" target="_blank" class="work-item">
+                <div class="work-image-wrapper">
+                    <img src="awear_cop1.webp" alt="Awear Cover 1" class="work-img-1">
+                    <img src="awear_cop2.webp" alt="Awear Cover 2" class="work-img-2">
                 </div>
-            </div>
-        </section>
+                <div class="work-meta">
+                    <div class="work-meta-row"><div class="work-title uppercase">AWEAR</div><div>2025</div></div>
+                    <div class="work-meta-row"><div>Web App Product</div></div>
+                </div>
+            </a>
 
-        <section id="service" class="section">
-            <div class="section-header">
-                <h2 class="section-title uppercase">Service</h2>
-                <span class="section-number uppercase">S03</span>
-            </div>
-            <div class="service-content">
-                <div>
-                    <p class="service-intro">
-                        From concept to launch, I specialize in crafting engaging, user-centric websites and visual experiences tailored to your business goals. My expertise spans a range of key design services, each focused on delivering seamless, functional, and effective digital solutions.
-                    </p>
-                    <div class="specialization">
-                        <h3 class="specialization-title">specialization</h3>
-                        <div class="specialization-text uppercase">
-                            <span class="specialization-line" data-delay="0">Web Design</span><br>
-                            <span class="specialization-line" data-delay="200">Development</span><br>
-                            <span class="specialization-line" data-delay="400">Identity</span>
-                        </div>
-                    </div>
+            <a href="toulì.html" target="_blank" class="work-item">
+                <div class="work-image-wrapper">
+                    <img src="touli_cop1.webp" alt="Touli Cover 1" class="work-img-1">
+                    <img src="touli_cop2.webp" alt="Touli Cover 2" class="work-img-2">
                 </div>
-                <div>
-                    <ul class="service-list uppercase">
-                        <li>E-commerce</li>
-                        <li>Entertainment</li>
-                        <li>Real Estate</li>
-                        <li>Business</li>
-                        <li>Marketing</li>
-                        <li>Fintech</li>
-                    </ul>
+                <div class="work-meta">
+                    <div class="work-meta-row"><div class="work-title uppercase">Toulì</div><div>2025</div></div>
+                    <div class="work-meta-row"><div>Service Design</div></div>
                 </div>
-            </div>
-        </section>
-    </div>
+            </a>
 
-    <footer class="footer" id="contact">
-        <div class="footer-content">
-            <div class="footer-cta-section">
-                <div class="footer-cta">Interested in working with us?</div>
-                <div class="footer-email uppercase">hello@gordian.com</div>
-            </div>
-
-            <div class="footer-brand uppercase">Gordian</div>
-
-            <div class="footer-info">
-                <div class="info-item">
-                    <span class="info-label">social:</span>
-                    <span>Instagram<br>LinkedIn</span>
-                </div>
-                <div class="info-item">
-                    <span class="info-label">location:</span>
-                    <span>Italy, Roma<br><span class="time-display">19:29:31</span></span>
-                </div>
-                <div class="info-item">
-                    <span class="info-label">available:</span>
-                    <span>09 September<br>12 october</span>
-                </div>
-                <div class="info-item">
-                    <span class="info-label">expertise:</span>
-                    <span>Design<br>Web development</span>
-                </div>
-            </div>
-
-            <div class="footer-copyright">© 2025 Claudio Cervetto. Tutti i diritti riservati.</div>
         </div>
+    </section>
+
+    <footer id="contact" class="footer">
+        <div class="footer-contact-info">
+            +39 3458197530<br>
+            claudio99cervetto@gmail.com
+        </div>
+        <div class="footer-copyright">©2026 Claudio Cervetto. All rights reserved.</div>
     </footer>
 
     <script>
-        const cursor = document.querySelector('.custom-cursor');
-        const cursorReveal = document.querySelector('.cursor-reveal');
-        let mouseX = 0;
-        let mouseY = 0;
-        let cursorX = 0;
-        let cursorY = 0;
+        let currentLanguage = 'ita';
+        const translations = {
+            ita: { 'nav-home': 'Home', 'nav-about': 'About', 'nav-works': 'Lavori', 'nav-contact': 'Contatti', 'hero-desc-1': 'Specializzato in web application complesse', 'hero-desc-2': 'e sistemi di prodotto.', 'section-works': 'Lavori' },
+            eng: { 'nav-home': 'Home', 'nav-about': 'About', 'nav-works': 'Works', 'nav-contact': 'Contact', 'hero-desc-1': 'Specialized in complex web applications', 'hero-desc-2': 'and product systems.', 'section-works': 'Works' }
+        };
 
-        document.addEventListener('mousemove', (e) => {
-            mouseX = e.clientX;
-            mouseY = e.clientY;
-        });
-
-        function animateCursor() {
-            const speed = 0.15;
-            cursorX += (mouseX - cursorX) * speed;
-            cursorY += (mouseY - cursorY) * speed;
-            
-            cursor.style.left = cursorX + 'px';
-            cursor.style.top = cursorY + 'px';
-            cursorReveal.style.left = cursorX + 'px';
-            cursorReveal.style.top = cursorY + 'px';
-            
-            requestAnimationFrame(animateCursor);
+        function switchLanguage(lang) {
+            if (lang === currentLanguage) return;
+            currentLanguage = lang;
+            document.querySelectorAll('.lang-ita, .lang-eng').forEach(el => el.classList.remove('active'));
+            document.querySelectorAll('.lang-' + lang).forEach(el => el.classList.add('active'));
+            document.querySelectorAll('[data-lang]').forEach(el => {
+                const key = el.getAttribute('data-lang');
+                if (translations[lang] && translations[lang][key]) el.textContent = translations[lang][key];
+            });
         }
-
-        animateCursor();
 
         let isScrolling = false;
         let targetScroll = window.pageYOffset;
         let currentScroll = window.pageYOffset;
 
-        function smoothScrollToTarget() {
+        function smoothScrollLoop() {
             const maxScroll = document.documentElement.scrollHeight - window.innerHeight;
-            const scrollThreshold = 1200;
-            
-            let dampingFactor = 0.1;
-            
+            const scrollThreshold = 1000;
+            let dampingFactor = 0.08; 
+
             if (targetScroll > maxScroll - scrollThreshold) {
-                const distanceFromBottom = maxScroll - targetScroll;
-                dampingFactor = 0.04 + (distanceFromBottom / scrollThreshold) * 0.06;
+                dampingFactor = 0.04 + ((maxScroll - targetScroll) / scrollThreshold) * 0.04;
+            } else if (targetScroll < scrollThreshold) {
+                dampingFactor = 0.04 + (targetScroll / scrollThreshold) * 0.04;
             }
-            
-            if (targetScroll < scrollThreshold) {
-                dampingFactor = 0.04 + (targetScroll / scrollThreshold) * 0.06;
-            }
-            
+
             currentScroll += (targetScroll - currentScroll) * dampingFactor;
-            
+
             if (Math.abs(targetScroll - currentScroll) > 0.5) {
                 window.scrollTo(0, currentScroll);
-                requestAnimationFrame(smoothScrollToTarget);
+                requestAnimationFrame(smoothScrollLoop);
             } else {
                 window.scrollTo(0, targetScroll);
                 isScrolling = false;
             }
         }
 
-        window.addEventListener('wheel', (e) => {
-            e.preventDefault();
-            
-            targetScroll += e.deltaY;
-            const maxScroll = document.documentElement.scrollHeight - window.innerHeight;
-            targetScroll = Math.max(0, Math.min(targetScroll, maxScroll));
-            
-            if (!isScrolling) {
-                isScrolling = true;
-                requestAnimationFrame(smoothScrollToTarget);
-            }
-        }, { passive: false });
-
-        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
-            anchor.addEventListener('click', function (e) {
+        const isTouchDevice = ('ontouchstart' in window) || (navigator.maxTouchPoints > 0);
+        if (!isTouchDevice) {
+            window.addEventListener('wheel', (e) => {
                 e.preventDefault();
-                const targetId = this.getAttribute('href');
-                
-                if (targetId === '#home') {
-                    targetScroll = 0;
-                } else {
-                    const target = document.querySelector(targetId);
-                    if (target) {
-                        const offset = 100;
-                        targetScroll = target.getBoundingClientRect().top + window.pageYOffset - offset;
-                    }
-                }
+                targetScroll += e.deltaY;
+                const maxScroll = document.documentElement.scrollHeight - window.innerHeight;
+                targetScroll = Math.max(0, Math.min(targetScroll, maxScroll));
                 
                 if (!isScrolling) {
                     isScrolling = true;
-                    requestAnimationFrame(smoothScrollToTarget);
+                    requestAnimationFrame(smoothScrollLoop);
+                }
+            }, { passive: false });
+        }
+
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                const targetId = this.getAttribute('href');
+                if (targetId === "#") return;
+                e.preventDefault();
+                const targetElement = document.querySelector(targetId);
+                
+                if (targetElement) {
+                    const offset = (targetId === "#home") ? 0 : 65;
+                    const rect = targetElement.getBoundingClientRect();
+                    targetScroll = rect.top + window.pageYOffset - offset;
+                    const maxScroll = document.documentElement.scrollHeight - window.innerHeight;
+                    targetScroll = Math.max(0, Math.min(targetScroll, maxScroll));
+
+                    if (!isScrolling) {
+                        isScrolling = true;
+                        requestAnimationFrame(smoothScrollLoop);
+                    }
                 }
             });
         });
 
-        function updateTime() {
-            const now = new Date();
-            const timeString = now.toLocaleTimeString('it-IT');
-            document.querySelectorAll('.time-display').forEach(el => {
-                el.textContent = timeString;
+        window.addEventListener('load', () => {
+            document.querySelectorAll('nav, .hero-left, .hero-image, .hero-description').forEach(el => {
+                el.classList.add('visible');
             });
-        }
-        setInterval(updateTime, 1000);
-        updateTime();
-
-        const mainNav = document.getElementById('mainNav');
-        const stickyNav = document.getElementById('stickyNav');
-        
-        function checkNavPosition() {
-            const mainNavRect = mainNav.getBoundingClientRect();
-            
-            if (mainNavRect.bottom <= 0) {
-                stickyNav.classList.add('visible');
-            } else {
-                stickyNav.classList.remove('visible');
-            }
-        }
-
-        window.addEventListener('scroll', checkNavPosition);
-
-        const experienceItems = document.querySelectorAll('.experience-item-new');
-        
-        function checkExperiencePosition() {
-            const windowHeight = window.innerHeight;
-            const centerPoint = windowHeight / 2;
-            
-            let closestItem = null;
-            let closestDistance = Infinity;
-            
-            experienceItems.forEach(item => {
-                const rect = item.getBoundingClientRect();
-                const itemCenter = rect.top + (rect.height / 2);
-                const distanceFromCenter = Math.abs(itemCenter - centerPoint);
-                
-                if (distanceFromCenter < closestDistance) {
-                    closestDistance = distanceFromCenter;
-                    closestItem = item;
-                }
-            });
-            
-            experienceItems.forEach(item => {
-                if (item === closestItem) {
-                    item.classList.add('active');
-                } else {
-                    item.classList.remove('active');
-                }
-            });
-        }
-
-        window.addEventListener('scroll', checkExperiencePosition);
-        window.addEventListener('resize', checkExperiencePosition);
-        checkExperiencePosition();
-
-        const specializationLines = document.querySelectorAll('.specialization-line');
-        
-        function checkSpecializationPosition() {
-            const windowHeight = window.innerHeight;
-            
-            specializationLines.forEach(line => {
-                const rect = line.getBoundingClientRect();
-                const delay = parseInt(line.getAttribute('data-delay'));
-                
-                if (rect.top < windowHeight * 0.8) {
-                    setTimeout(() => {
-                        line.classList.add('visible');
-                    }, delay);
-                }
-            });
-        }
-
-        window.addEventListener('scroll', checkSpecializationPosition);
-        checkSpecializationPosition();
-
-        const footerBrand = document.querySelector('.footer-brand');
-        
-        function checkFooterBrandPosition() {
-            const windowHeight = window.innerHeight;
-            const rect = footerBrand.getBoundingClientRect();
-            
-            if (rect.top < windowHeight * 0.8) {
-                footerBrand.classList.add('visible');
-            }
-        }
-
-        window.addEventListener('scroll', checkFooterBrandPosition);
-        checkFooterBrandPosition();
+        });
     </script>
 </body>
 </html>
