@@ -37,7 +37,6 @@
             letter-spacing: -0.02em;
         }
 
-        /* --- NAVIGATION --- */
         nav {
             position: fixed;
             top: 0;
@@ -74,7 +73,6 @@
         .nav-links a:hover span { transform: translateY(-100%); }
         .nav-links a:hover::before { transform: translateY(-100%); }
 
-        /* --- CONTAINER --- */
         .container {
             padding: 100px 0 60px 0;
             width: 100%;
@@ -86,7 +84,6 @@
             padding-right: 20px;
         }
 
-        /* --- PROJECT HEADER --- */
         .project-header {
             margin-bottom: 20px;
             opacity: 0;
@@ -139,7 +136,6 @@
             line-height: 1;
         }
 
-        /* --- CONTENT LAYOUT --- */
         .project-content {
             display: flex;
             flex-direction: column;
@@ -156,7 +152,6 @@
         }
         .stacked-section.visible { opacity: 1; transform: translateY(0); }
 
-        /* IMAGES & VIDEO */
         .full-width-image {
             width: 100%;
             height: auto;
@@ -167,7 +162,6 @@
             padding-right: 20px;
         }
 
-        /* CUSTOM VIDEO PLAYER STYLES */
         .custom-video-wrapper {
             position: relative;
             width: 100%;
@@ -182,7 +176,6 @@
             display: block;
         }
 
-        /* Controls Container */
         .video-controls-container {
             position: absolute;
             bottom: 0;
@@ -204,7 +197,6 @@
             pointer-events: all;
         }
 
-        /* Timeline bar */
         .timeline-bar {
             flex-grow: 1;
             height: 5px;
@@ -224,7 +216,6 @@
             border-radius: 2px;
         }
 
-        /* Fullscreen Button */
         .fullscreen-btn {
             width: 20px;
             height: 20px;
@@ -252,7 +243,6 @@
         }
 
 
-        /* Play Button Overlay */
         .play-icon-overlay {
             position: absolute;
             top: 50%;
@@ -284,7 +274,6 @@
             margin-left: 6px;
         }
 
-        /* TEXT BLOCKS */
         .text-block {
             width: 40%; 
             padding-left: var(--content-padding-left);
@@ -339,10 +328,9 @@
             line-height: 1.3;
         }
 
-        /* --- LAYOUT AFFIANCATO (DESKTOP) --- */
         .content-row {
             display: flex;
-            flex-direction: column; /* Default mobile */
+            flex-direction: column; 
         }
         
         .content-row .image-wrapper {
@@ -364,11 +352,9 @@
             padding-right: 20px;
         }
 
-        /* UTILITY PER VISIBILITA MOBILE/DESKTOP */
         .mobile-only { display: block; }
         .desktop-only { display: none; }
 
-        /* DESKTOP SIDE-BY-SIDE */
         @media (min-width: 851px) {
             .mobile-only { display: none; }
             .desktop-only { display: block; }
@@ -412,7 +398,6 @@
             }
         }
         
-        /* --- WORKS SECTION --- */
         .works-section {
             margin-top: 350px; 
             padding-left: var(--content-padding-left);
@@ -427,10 +412,8 @@
         }
         .works-section.visible { opacity: 1; transform: translateY(0); }
 
-        /* MODIFICA: Larghezza aumentata a 280px */
         .works-header { flex: 0 0 280px; } 
         
-        /* MODIFICA: white-space: nowrap per evitare a capo */
         .works-title { 
             font-size: 1.75rem; 
             font-weight: 700; 
@@ -442,15 +425,12 @@
         
         .works-grid-container { flex: 1; } 
         
-        /* Grid Layout: 3 cols, gap 0 */
         .works-grid { 
             display: grid; 
             grid-template-columns: repeat(3, 1fr); 
             gap: 0; 
         }
         
-        /* DESKTOP ALIGNMENT: 
-           Pushes the first item to start at column 2. */
         @media (min-width: 1025px) {
             .works-grid .work-item:first-child {
                 grid-column-start: 2;
@@ -464,24 +444,20 @@
             position: relative;
         }
         
-        /* Contenitore Immagini e Bordi */
         .work-image-wrapper { 
             width: 100%; 
             aspect-ratio: 4 / 3; 
             position: relative;
             overflow: hidden;
             
-            /* DEFAULT (Cop2): Nero */
             border: 1px solid #000000; 
             transition: border-color 0.25s ease;
         }
         
-        /* HOVER (Cop1): Bianco */
         .work-item:hover .work-image-wrapper {
             border-color: #ffffff;
         }
 
-        /* Gestione Immagini Sovrapposte */
         .work-img-1, .work-img-2 {
             width: 100%;
             height: 100%;
@@ -492,14 +468,12 @@
             transition: opacity 0.25s ease;
         }
 
-        /* LOGICA DESKTOP: Default Cop2, Hover Cop1 */
-        .work-img-1 { opacity: 0; z-index: 2; } /* Cop1 (Hover) nascosta */
-        .work-img-2 { opacity: 1; z-index: 1; } /* Cop2 (Static) visibile */
+        .work-img-1 { opacity: 0; z-index: 2; } 
+        .work-img-2 { opacity: 1; z-index: 1; } 
 
         .work-item:hover .work-img-1 { opacity: 1; }
         .work-item:hover .work-img-2 { opacity: 0; }
         
-        /* Meta Data (Testo) */
         .work-meta { 
             padding: 10px; 
             display: flex; 
@@ -511,23 +485,15 @@
         .work-meta-row:nth-child(2) { justify-content: flex-end; text-align: right; }
 
 
-        /* --- FOOTER --- */
         .footer { padding: 45px 20px 20px 20px; }
         .footer-contact-info { font-size: 0.85rem; line-height: 1.3; margin-bottom: 20px; }
         .footer-copyright { font-size: 0.75rem; color: #999999; font-weight: 500; }
 
-        /* --- RESPONSIVE --- */
         @media (max-width: 1024px) {
-            /* TABLET/MOBILE: 
-               - Cop1 NASCOSTA completamente
-               - Cop2 VISIBILE e FISSA
-               - BORDO SEMPRE NERO 
-            */
             .work-img-1 { display: none !important; } 
             .work-img-2 { opacity: 1 !important; visibility: visible !important; } 
             .work-image-wrapper { border-color: #000000 !important; } 
 
-            /* Griglia Tablet: 2 colonne */
             .works-grid { grid-template-columns: repeat(2, 1fr); gap: 20px; }
             .work-item { margin-bottom: 20px; }
         }
@@ -545,11 +511,9 @@
             .text-block { width: 100%; padding-right: 20px; margin-bottom: 40px; }
             .text-block p.big-statement { font-size: 7vw; }
 
-            /* Works Section Responsive */
             .works-section { flex-direction: column; margin-top: 150px; gap: 40px; padding-right: 20px; }
             .works-header { flex: auto; width: 100%; }
             
-            /* MOBILE GAP: 30px */
             .works-grid { grid-template-columns: 1fr; gap: 30px; } 
             
             .works-grid-container { width: 100%; }
@@ -732,7 +696,7 @@
             <div class="works-grid-container">
                 <div class="works-grid">
                     
-                    <a href="woowe.html" target="_blank" class="work-item">
+                    <a href="woowe.html" class="work-item">
                         <div class="work-image-wrapper">
                             <img src="../assets/img/woowe_cop1.webp" alt="Woowe Cover 1" class="work-img-1">
                             <img src="../assets/img/woowe_cop2.webp" alt="Woowe Cover 2" class="work-img-2">
@@ -743,7 +707,7 @@
                         </div>
                     </a>
         
-                    <a href="awear.html" target="_blank" class="work-item">
+                    <a href="awear.html" class="work-item">
                         <div class="work-image-wrapper">
                             <img src="../assets/img/awear_cop1.webp" alt="Awear Cover 1" class="work-img-1">
                             <img src="../assets/img/awear_cop2.webp" alt="Awear Cover 2" class="work-img-2">
@@ -855,25 +819,21 @@
                 video.currentTime = pos * video.duration;
             });
 
-            // GESTIONE FULLSCREEN (Compatibile iPhone/iPad/Android/Desktop)
             fsBtn.addEventListener('click', (e) => {
                 e.stopPropagation();
                 
-                // 1. Esci dal Fullscreen
                 if (document.fullscreenElement || document.webkitFullscreenElement) {
                     if (document.exitFullscreen) { document.exitFullscreen(); }
                     else if (document.webkitExitFullscreen) { document.webkitExitFullscreen(); }
                     return;
                 }
 
-                // 2. Entra in Fullscreen (Standard / Android / PC)
                 if (videoWrapper.requestFullscreen) { 
                     videoWrapper.requestFullscreen(); 
                 } 
                 else if (videoWrapper.webkitRequestFullscreen) { 
                     videoWrapper.webkitRequestFullscreen(); 
                 } 
-                // 3. Fallback per iPhone (iOS)
                 else if (video.webkitEnterFullscreen) { 
                     video.webkitEnterFullscreen(); 
                 }
@@ -886,7 +846,6 @@
                 fsIcon.className = 'icon-maximize';
             });
             
-            // Fade out audio 0.7s
             let fadeInterval;
             const observer = new IntersectionObserver((entries) => {
                 entries.forEach(entry => {
@@ -894,7 +853,7 @@
                         if (fadeInterval) clearInterval(fadeInterval);
                         
                         const startVol = video.volume;
-                        const fadeDuration = 700; // 0.7s
+                        const fadeDuration = 700; 
                         const fadeSteps = 20; 
                         const stepTime = fadeDuration / fadeSteps;
                         const volStep = startVol / fadeSteps;
