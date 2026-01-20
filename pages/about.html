@@ -1,0 +1,793 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="color-scheme" content="light">
+    <title>Claudio Cervetto - UX and Brand Design</title>
+    <link href="https://fonts.googleapis.com/css2?family=Azeret+Mono:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --bg-color: #ffffff;
+            --text-color: #000000;
+            --border-color: #000000;
+            --text-muted: #cccccc;
+            --accent-color: #00CED1;
+            --page-padding: 0px;
+            color-scheme: light;
+        }
+
+        body {
+            font-family: 'Azeret Mono', monospace;
+            background-color: var(--bg-color);
+            color: var(--text-color);
+            line-height: 1.6;
+            overflow-x: hidden;
+        }
+
+        .uppercase {
+            text-transform: uppercase;
+            letter-spacing: -0.02em;
+        }
+
+        /* --- NAVIGATION (IDENTICA ALLA HOMEPAGE) --- */
+        nav {
+            position: fixed;
+            top: 0;
+            width: 100%;
+            padding: 15px 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background: var(--bg-color);
+            z-index: 1000;
+            opacity: 0;
+            transform: translateY(8px);
+            transition: opacity 0.8s ease, transform 0.8s ease;
+        }
+
+        nav.visible { opacity: 1; transform: translateY(0); }
+
+        .nav-right { display: flex; align-items: center; gap: 40px; }
+
+        .language-selector { font-size: 1rem; letter-spacing: -0.02em; display: flex; gap: 5px; font-weight: 500; }
+        .language-selector span { cursor: pointer; transition: opacity 0.3s; position: relative; display: inline-block; overflow: hidden; }
+        .language-selector span .lang-text { display: inline-block; transition: transform 0.3s ease; }
+        .language-selector span::before { content: attr(data-text); position: absolute; top: 100%; left: 0; transform: translateY(0); transition: transform 0.3s ease; }
+        .language-selector span:hover .lang-text { transform: translateY(-100%); }
+        .language-selector span:hover::before { transform: translateY(-100%); }
+        .language-selector .active { font-weight: 500; }
+        .language-separator { opacity: 0.3; }
+
+        .nav-copyright { letter-spacing: -0.03em; font-weight: 500; position: relative; top: -4px; }
+
+        .nav-links { display: flex; gap: 15px; list-style: none; }
+        .nav-links a { color: var(--text-color); text-decoration: none; font-size: 1rem; font-weight: 500; position: relative; display: inline-block; overflow: hidden; cursor: pointer; }
+        .nav-links a span { display: inline-block; transition: transform 0.3s ease; }
+        .nav-links a::before { content: attr(data-text); position: absolute; top: 100%; left: 0; transition: transform 0.3s ease; }
+        .nav-links a:hover span { transform: translateY(-100%); }
+        .nav-links a:hover::before { transform: translateY(-100%); }
+
+        .container {
+            padding: 100px 20px 60px 20px;
+            max-width: none;
+            margin: 0;
+        }
+
+        .section {
+            margin-bottom: 100px;
+        }
+
+        .section-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 30px;
+        }
+
+        #about .section-header {
+            margin-bottom: 0px;
+        }
+
+        #education .section-header {
+            margin-bottom: 15px;
+        }
+
+        #service .section-header {
+            margin-bottom: 15px;
+        }
+
+        .section-title {
+            font-size: 1.3rem;
+            font-weight: 500;
+            letter-spacing: -0.02em;
+            text-transform: none;
+        }
+
+        #about .section-title {
+            font-size: 2.5rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            color: #00CED1;
+        }
+
+        .about-content {
+            display: flex;
+            flex-direction: column;
+            gap: 80px;
+        }
+
+        .about-text {
+            font-size: 1rem;
+            line-height: 1.5;
+            max-width: 500px;
+            width: 100%;
+            color: var(--text-color);
+            letter-spacing: -0.03em;
+        }
+
+        .experience-section {
+            width: 100%;
+        }
+
+        .experience-title-header {
+            font-size: 1.3rem;
+            font-weight: 500;
+            margin-bottom: 10px;
+            letter-spacing: -0.02em;
+        }
+
+        #about-header, #about-paragraph {
+            opacity: 0;
+            transform: translateY(8px);
+            transition: opacity 0.8s ease, transform 0.8s ease;
+        }
+
+        #about-header.visible, #about-paragraph.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        #languages-section {
+            opacity: 0;
+            transform: translateY(-8px); 
+            transition: opacity 0.8s ease, transform 0.8s ease;
+        }
+
+        #languages-section.visible {
+            opacity: 1;
+            transform: translateY(0); 
+        }
+
+        #formazione .experience-title-header {
+            margin-bottom: 10px; 
+        }
+
+        #education {
+            margin-bottom: 300px; 
+        }
+
+        .languages-text {
+            font-size: 1rem;
+            line-height: 1.5;
+            letter-spacing: -0.03em;
+        }
+
+        #formazione {
+            margin-top: 150px;
+        }
+
+        .experience-list {
+            display: flex;
+            flex-direction: column;
+            gap: 50px;
+        }
+
+        .experience-item-new {
+            display: grid;
+            grid-template-columns: 220px 1px 2fr 1px 1fr;
+            gap: 25px;
+            align-items: start;
+            transition: color 0.3s ease;
+            color: var(--text-muted);
+            position: relative;
+        }
+
+        .experience-item-new::before {
+            content: '';
+            position: absolute;
+            top: calc(1.05rem + 8px + 4px);
+            left: 0;
+            right: 0;
+            height: 1px;
+            background-color: var(--border-color);
+            transition: background-color 0.3s ease;
+        }
+
+        .experience-item-new.active {
+            color: var(--text-color);
+        }
+
+        .experience-item-new.active::before {
+            background-color: var(--text-color);
+        }
+
+        .experience-item-new.active .experience-date-new,
+        .experience-item-new.active .experience-role,
+        .experience-item-new.active .experience-description,
+        .experience-item-new.active .experience-company-new {
+            color: var(--text-color);
+        }
+
+        .experience-date-new {
+            font-size: 0.95rem;
+            color: inherit;
+            letter-spacing: -0.02em;
+        }
+
+        .experience-divider {
+            width: 1px;
+            height: 50px;
+            position: relative;
+            background: transparent;
+        }
+
+        .experience-divider::before {
+            content: '';
+            position: absolute;
+            top: 13px;
+            left: 0;
+            width: 1px;
+            height: 8px;
+            background-color: var(--border-color);
+        }
+
+        .experience-divider::after {
+            content: '';
+            position: absolute;
+            bottom: 6px;
+            left: 0;
+            width: 1px;
+            height: 8px;
+            background-color: var(--border-color);
+        }
+
+        .experience-details {
+            display: flex;
+            flex-direction: column;
+            gap: 2px;
+        }
+
+        .experience-role {
+            font-size: 1.05rem;
+            font-weight: 400;
+            color: inherit;
+            padding-bottom: 8px;
+            letter-spacing: -0.02em;
+        }
+
+        .experience-description {
+            font-size: 0.95rem;
+            line-height: 1.4;
+            color: inherit;
+            max-width: 450px;
+            width: 100%;
+            letter-spacing: -0.03em;
+        }
+
+        .experience-company-new {
+            font-size: 1.05rem;
+            color: inherit;
+            text-align: left;
+            letter-spacing: -0.02em;
+        }
+
+        .service-content {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 60px;
+        }
+
+        .service-content > div:first-child {
+            order: 1;
+        }
+
+        .service-content > div:last-child {
+            order: 2;
+        }
+
+        @media (max-width: 1100px) {
+            .service-content {
+                grid-template-columns: 1fr;
+            }
+            
+            .service-content > div:first-child {
+                order: 1;
+            }
+
+            .service-content > div:last-child {
+                order: 2;
+            }
+        }
+
+        .service-intro {
+            margin-bottom: 40px;
+            font-size: 1rem;
+            line-height: 1.5;
+            max-width: 60%;
+            letter-spacing: -0.03em;
+        }
+
+        .footer {
+            background: var(--bg-color);
+            color: var(--text-color);
+            padding: 30px 20px 20px 20px;
+        }
+
+        .footer-contact {
+            margin-bottom: 20px;
+        }
+
+        .footer-contact-info {
+            font-size: 0.85rem;
+            letter-spacing: -0.02em;
+            font-weight: 400;
+            line-height: 1.3;
+        }
+
+        .footer-copyright {
+            font-size: 0.75rem;
+            color: #999999;
+            text-align: left;
+            letter-spacing: -0.03em;
+            font-weight: 500;
+        }
+
+        #service {
+            margin-bottom: 40px;
+        }
+
+        @media (max-width: 1400px) {
+            .experience-item-new {
+                grid-template-columns: 200px 1px 2fr 1px 1fr;
+                gap: 20px;
+            }
+        }
+
+        /* --- MOBILE OPTIMIZATIONS (850px) - IDENTICO ALLA HOMEPAGE --- */
+        @media (max-width: 850px) {
+            nav { 
+                padding: 10px 5%; 
+            }
+            
+            .nav-copyright { display: none; }
+            
+            .nav-right { 
+                width: 100%; 
+                display: flex;
+                justify-content: space-between; 
+                align-items: center;
+                gap: 0;
+            }
+            
+            .language-selector { font-size: 0.85rem; gap: 3px; }
+            .nav-links { display: flex; gap: 15px; }
+            .nav-links a { font-size: 0.85rem; }
+
+            body {
+                padding-top: 40px;
+            }
+
+            .container {
+                padding: 100px 5% 60px 5%;
+            }
+
+            .section-header {
+                margin-bottom: 20px;
+            }
+
+            .about-content {
+                gap: 60px;
+            }
+
+            .experience-item-new {
+                grid-template-columns: 1fr;
+                gap: 15px;
+            }
+
+            .experience-role::after {
+                left: 0;
+                right: 0;
+            }
+
+            .experience-divider {
+                display: none;
+            }
+
+            .experience-divider::before,
+            .experience-divider::after {
+                display: none;
+            }
+
+            .experience-company-new {
+                text-align: left;
+            }
+
+            .service-content {
+                grid-template-columns: 1fr;
+            }
+
+            .service-intro {
+                max-width: 100%;
+            }
+
+            .footer { 
+                padding: 25px 5% 18px 5%; 
+            }
+        }
+
+        /* EXTRA SMALL SCREENS (480px) */
+        @media (max-width: 480px) {
+            nav { padding: 8px 5%; }
+            .nav-links { gap: 10px; }
+            .container { padding: 70px 5% 40px 5%; }
+        }
+    </style>
+</head>
+<body>
+    <nav>
+        <span class="nav-copyright">©2026 Claudio Cervetto</span>
+        <div class="nav-right">
+            <div class="language-selector">
+                <span class="lang-ita active" onclick="switchLanguage('ita')" data-text="Ita"><span class="lang-text">Ita</span></span>
+                <span class="language-separator">/</span>
+                <span class="lang-eng" onclick="switchLanguage('eng')" data-text="Eng"><span class="lang-text">Eng</span></span>
+            </div>
+            <ul class="nav-links">
+                <li><a href="index.html" data-text="Home"><span data-lang="nav-home">Home</span></a></li>
+                <li><a href="#about" data-text="About"><span data-lang="nav-about">About</span></a></li>
+                <li><a href="index.html#works" data-text="Lavori"><span data-lang="nav-works">Lavori</span></a></li>
+                <li><a href="#contact" data-text="Contatti"><span data-lang="nav-contact">Contatti</span></a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <div class="container">
+        <section id="about" class="section">
+            <div class="section-header" id="about-header">
+                <h2 class="section-title" data-ita="About" data-eng="About">About</h2>
+            </div>
+            <div class="about-content">
+                <div class="about-text" id="about-paragraph" data-ita="Sono un Product Designer con una formazione in design del prodotto digitale. Progetto esperienze di prodotto complete, integrando UX, UI e obiettivi di business: dalla comprensione dei bisogni e dei modelli mentali, alla definizione di flussi, interazioni e soluzioni visive chiare e coerenti. Lavoro tra ricerca, progettazione e prototipazione, principalmente su web application complesse, utilizzando workflow AI-assisted come supporto al processo." data-eng="I'm a Product Designer with a background in digital product design. I design complete product experiences, integrating UX, UI, and business objectives: from understanding needs and mental models, to defining flows, interactions, and clear, consistent visual solutions. I work across research, design, and prototyping, mainly on complex web applications, using AI-assisted workflows to support the process.">
+                    Sono un Product Designer con una formazione in design del prodotto digitale. Progetto esperienze di prodotto complete, integrando UX, UI e obiettivi di business: dalla comprensione dei bisogni e dei modelli mentali, alla definizione di flussi, interazioni e soluzioni visive chiare e coerenti. Lavoro tra ricerca, progettazione e prototipazione, principalmente su web application complesse, utilizzando workflow AI-assisted come supporto al processo.
+                </div>
+                
+                <div class="experience-section" id="languages-section">
+                    <h3 class="experience-title-header" data-ita="Lingue" data-eng="Languages">Lingue</h3>
+                    <div class="languages-text" data-ita="Italiano · Madrelingua<br>Inglese · B2" data-eng="Italian · Native<br>English · B2">
+                        Italiano · Madrelingua<br>Inglese · B2
+                    </div>
+                </div>
+
+                <div class="experience-section" id="formazione">
+                    <h3 class="experience-title-header" data-ita="Formazione" data-eng="Education">Formazione</h3>
+                    <div class="experience-list">
+                        <div class="experience-item-new">
+                            <div class="experience-date-new">09.2019 / 06.2023</div>
+                            <div class="experience-divider"></div>
+                            <div class="experience-details">
+                                <div class="experience-role uppercase" 
+                                     data-ita="Laurea Triennale in Design del Prodotto e della Comunicazione" 
+                                     data-eng="Bachelor's Degree in Product and Communication Design"
+                                     data-ita-mobile="Product Design"
+                                     data-eng-mobile="Product Design">Laurea Triennale in Design del Prodotto e della Comunicazione</div>
+                                <div class="experience-description" 
+                                     data-ita="Specializzazione nello sviluppo di Visual Identity Systems e interfacce web responsive, con focus su coerenza visiva cross-touchpoint, gerarchie tipografiche e layout digitali complessi." 
+                                     data-eng="Specialization in developing Visual Identity Systems and responsive web interfaces, with focus on cross-touchpoint visual consistency, typographic hierarchies and complex digital layouts."
+                                     data-ita-mobile="Laurea triennale. Specializzazione nello sviluppo di Visual Identity Systems e interfacce web responsive, con focus su coerenza visiva cross-touchpoint, gerarchie tipografiche e layout digitali complessi."
+                                     data-eng-mobile="Bachelor's degree. Specialization in developing Visual Identity Systems and responsive web interfaces, with focus on cross-touchpoint visual consistency, typographic hierarchies and complex digital layouts.">Specializzazione nello sviluppo di Visual Identity Systems e interfacce web responsive, con focus su coerenza visiva cross-touchpoint, gerarchie tipografiche e layout digitali complessi.</div>
+                            </div>
+                            <div class="experience-divider"></div>
+                            <div class="experience-company-new uppercase"
+                                 data-ita="Università di Genova"
+                                 data-eng="University of Genoa"
+                                 data-ita-mobile="Unige"
+                                 data-eng-mobile="Unige">Università di Genova</div>
+                        </div>
+
+                        <div class="experience-item-new">
+                            <div class="experience-date-new" data-ita="09.2023 / 12.2025" data-eng="09.2023 / 12.2025">09.2023 / 12.2025</div>
+                            <div class="experience-divider"></div>
+                            <div class="experience-details">
+                                <div class="experience-role uppercase" 
+                                     data-ita="Laurea Magistrale in Design del Prodotto e dell'Evento" 
+                                     data-eng="Master's Degree in Product and Event Design"
+                                     data-ita-mobile="Product Design"
+                                     data-eng-mobile="Product Design">Laurea Magistrale in Design del Prodotto e dell'Evento</div>
+                                <div class="experience-description" 
+                                     data-ita="Specializzazione in UX Research e progettazione di sistemi interattivi, con esperienza in front-end development AI-assisted (HTML, CSS, JavaScript). Competenze acquisite nella progettazione dell'esperienza utente per web application complesse, con applicazioni anche in contesti industriali e sistemi 3D." 
+                                     data-eng="Specialization in UX Research and interactive systems design, with experience in AI-assisted front-end development (HTML, CSS, JavaScript). Skills acquired in user experience design for complex web applications, with applications also in industrial contexts and 3D systems."
+                                     data-ita-mobile="Laurea magistrale. Specializzazione in UX Research e progettazione di sistemi interattivi, con esperienza in front-end development AI-assisted (HTML, CSS, JavaScript). Competenze acquisite nella progettazione dell'esperienza utente per web application complesse, con applicazioni anche in contesti industriali e sistemi 3D."
+                                     data-eng-mobile="Master's degree. Specialization in UX Research and interactive systems design, with experience in AI-assisted front-end development (HTML, CSS, JavaScript). Skills acquired in user experience design for complex web applications, with applications also in industrial contexts and 3D systems.">Specializzazione in UX Research e progettazione di sistemi interattivi, con esperienza in front-end development AI-assisted (HTML, CSS, JavaScript). Competenze acquisite nella progettazione dell'esperienza utente per web application complesse, con applicazioni anche in contesti industriali e sistemi 3D.</div>
+                            </div>
+                            <div class="experience-divider"></div>
+                            <div class="experience-company-new uppercase"
+                                 data-ita="Università di Genova"
+                                 data-eng="University of Genoa"
+                                 data-ita-mobile="Unige"
+                                 data-eng-mobile="Unige">Università di Genova</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="education" class="section">
+            <div class="section-header">
+                <h2 class="section-title" data-ita="Esperienze" data-eng="Experiences">Esperienze</h2>
+            </div>
+            <div class="about-content">
+                <div class="experience-section">
+                    <div class="experience-list">
+                        <div class="experience-item-new">
+                            <div class="experience-date-new">04.2022 / 05.2022</div>
+                            <div class="experience-divider"></div>
+                            <div class="experience-details">
+                                <div class="experience-role uppercase" data-ita="Brand Designer" data-eng="Brand Designer">Brand Designer</div>
+                                <div class="experience-description" data-ita="Progettazione di brand identity all'interno di uno studio di web e graphic design, con sviluppo di sistemi visivi coerenti e applicabili a prodotti digitali." data-eng="Brand identity design within a web and graphic design studio, developing consistent visual systems applicable to digital products.">Progettazione di brand identity all'interno di uno studio di web e graphic design, con sviluppo di sistemi visivi coerenti e applicabili a prodotti digitali.</div>
+                            </div>
+                            <div class="experience-divider"></div>
+                            <div class="experience-company-new uppercase"
+                                 data-ita="Coccodè Creative"
+                                 data-eng="Coccodè Creative"
+                                 data-ita-mobile="Coccodè"
+                                 data-eng-mobile="Coccodè">Coccodè Creative</div>
+                        </div>
+
+                        <div class="experience-item-new">
+                            <div class="experience-date-new">04.2024 / 05.2024</div>
+                            <div class="experience-divider"></div>
+                            <div class="experience-details">
+                                <div class="experience-role uppercase" data-ita="Product Designer" data-eng="Product Designer">Product Designer</div>
+                                <div class="experience-description" data-ita="Progettazione dell'esperienza utente e dell'interfaccia per siti web, con focus su flussi, layout, gerarchie visive e struttura dell'informazione, in relazione agli obiettivi del prodotto." data-eng="User experience and interface design for websites, with focus on flows, layouts, visual hierarchies and information structure, in relation to product objectives.">Progettazione dell'esperienza utente e dell'interfaccia per siti web, con focus su flussi, layout, gerarchie visive e struttura dell'informazione, in relazione agli obiettivi del prodotto.</div>
+                            </div>
+                            <div class="experience-divider"></div>
+                            <div class="experience-company-new uppercase"
+                                 data-ita="Coccodè Creative"
+                                 data-eng="Coccodè Creative"
+                                 data-ita-mobile="Coccodè"
+                                 data-eng-mobile="Coccodè">Coccodè Creative</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="service" class="section">
+            <div class="section-header">
+                <h2 class="section-title" data-ita="Come lavoro" data-eng="How I work">Come lavoro</h2>
+            </div>
+            <div class="service-content">
+                <div>
+                    <p class="service-intro" data-ita="Parto dalla comprensione del problema, delle persone e del contesto di prodotto, attraverso ricerca, analisi e definizione dei flussi. Progetto soluzioni che integrano esperienza, interfaccia e coerenza visiva, validate e iterate tramite prototipi interattivi, mantenendo un equilibrio tra usabilità, fattibilità tecnica e obiettivi del prodotto." data-eng="I start from understanding the problem, people and product context, through research, analysis and flow definition. I design solutions that integrate experience, interface and visual consistency, validated and iterated through interactive prototypes, maintaining a balance between usability, technical feasibility and product objectives.">
+                        Parto dalla comprensione del problema, delle persone e del contesto di prodotto, attraverso ricerca, analisi e definizione dei flussi. Progetto soluzioni che integrano esperienza, interfaccia e coerenza visiva, validate e iterate tramite prototipi interattivi, mantenendo un equilibrio tra usabilità, fattibilità tecnica e obiettivi del prodotto.
+                    </p>
+                </div>
+            </div>
+        </section>
+    </div>
+
+    <footer id="contact" class="footer">
+        <div class="footer-contact">
+            <div class="footer-contact-info">
+                +39 3458197530<br>
+                claudio99cervetto@gmail.com
+            </div>
+        </div>
+        <div class="footer-copyright">©2026 Claudio Cervetto. All rights reserved.</div>
+    </footer>
+
+    <script>
+        let currentLanguage = 'ita';
+
+        const translations = {
+            ita: {
+                'nav-home': 'Home',
+                'nav-about': 'About',
+                'nav-works': 'Lavori',
+                'nav-contact': 'Contatti',
+            },
+            eng: {
+                'nav-home': 'Home',
+                'nav-about': 'About',
+                'nav-works': 'Works',
+                'nav-contact': 'Contact',
+            }
+        };
+
+        function switchLanguage(lang) {
+            if (lang === currentLanguage) return;
+            
+            currentLanguage = lang;
+            
+            document.querySelectorAll('.lang-ita, .lang-eng').forEach(el => {
+                el.classList.remove('active');
+            });
+            document.querySelectorAll('.lang-' + lang).forEach(el => {
+                el.classList.add('active');
+            });
+
+            document.querySelectorAll('[data-lang]').forEach(el => {
+                const key = el.getAttribute('data-lang');
+                if (translations[lang] && translations[lang][key]) {
+                    el.textContent = translations[lang][key];
+                }
+            });
+
+            document.querySelectorAll('.nav-links a').forEach(link => {
+                const span = link.querySelector('span');
+                if (span) {
+                    link.setAttribute('data-text', span.textContent);
+                }
+            });
+            
+            updateTexts();
+        }
+
+        function updateTexts() {
+            const isMobile = window.innerWidth <= 1400;
+            const suffix = isMobile ? '-mobile' : '';
+            
+            document.querySelectorAll('[data-ita][data-eng]').forEach(el => {
+                const mobileAttr = 'data-' + currentLanguage + suffix;
+                const desktopAttr = 'data-' + currentLanguage;
+                
+                let newText = el.getAttribute(mobileAttr) || el.getAttribute(desktopAttr);
+                
+                if (newText) {
+                    const innerSpan = el.querySelector('span');
+                    if (innerSpan && el.tagName === 'A') {
+                        innerSpan.textContent = newText;
+                        el.setAttribute('data-text', newText);
+                    } else if (newText.includes('<br>')) {
+                        el.innerHTML = newText;
+                    } else {
+                        el.textContent = newText;
+                    }
+                }
+            });
+            
+            document.querySelectorAll('.specialization-line').forEach(line => {
+                const newText = line.getAttribute('data-' + currentLanguage);
+                if (newText) {
+                    line.textContent = newText;
+                }
+            });
+        }
+
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                const targetId = this.getAttribute('href');
+                const target = document.querySelector(targetId);
+        
+                if (target) {
+                    let offset = 100; 
+                    if (targetId === '#contact') {
+                        offset = 670; 
+                    }
+            
+                    targetScroll = target.getBoundingClientRect().top + window.pageYOffset - offset;
+            
+                    if (!isScrolling) {
+                        isScrolling = true;
+                        requestAnimationFrame(smoothScrollToTarget);
+                    }
+                }
+            });
+        });
+
+        let isScrolling = false;
+        let targetScroll = window.pageYOffset;
+        let currentScroll = window.pageYOffset;
+
+        function smoothScrollToTarget() {
+            const maxScroll = document.documentElement.scrollHeight - window.innerHeight;
+            const scrollThreshold = 1200;
+            
+            let dampingFactor = 0.1;
+            
+            if (targetScroll > maxScroll - scrollThreshold) {
+                const distanceFromBottom = maxScroll - targetScroll;
+                dampingFactor = 0.04 + (distanceFromBottom / scrollThreshold) * 0.06;
+            }
+            
+            if (targetScroll < scrollThreshold) {
+                dampingFactor = 0.04 + (targetScroll / scrollThreshold) * 0.06;
+            }
+            
+            currentScroll += (targetScroll - currentScroll) * dampingFactor;
+            
+            if (Math.abs(targetScroll - currentScroll) > 0.5) {
+                window.scrollTo(0, currentScroll);
+                requestAnimationFrame(smoothScrollToTarget);
+            } else {
+                window.scrollTo(0, targetScroll);
+                isScrolling = false;
+            }
+        }
+
+        const isTouchDevice = ('ontouchstart' in window) || (navigator.maxTouchPoints > 0);
+        if (!isTouchDevice) {
+            window.addEventListener('wheel', (e) => {
+                e.preventDefault();
+                
+                targetScroll += e.deltaY;
+                const maxScroll = document.documentElement.scrollHeight - window.innerHeight;
+                targetScroll = Math.max(0, Math.min(targetScroll, maxScroll));
+                
+                if (!isScrolling) {
+                    isScrolling = true;
+                    requestAnimationFrame(smoothScrollToTarget);
+                }
+            }, { passive: false });
+        }
+
+        const experienceItems = document.querySelectorAll('.experience-item-new');
+        
+        function checkExperiencePosition() {
+            const windowHeight = window.innerHeight;
+            const centerPoint = windowHeight / 2;
+            
+            let closestItem = null;
+            let closestDistance = Infinity;
+            
+            experienceItems.forEach(item => {
+                const rect = item.getBoundingClientRect();
+                const itemCenter = rect.top + (rect.height / 2);
+                const distanceFromCenter = Math.abs(itemCenter - centerPoint);
+                
+                if (distanceFromCenter < closestDistance) {
+                    closestDistance = distanceFromCenter;
+                    closestItem = item;
+                }
+            });
+            
+            experienceItems.forEach(item => {
+                if (item === closestItem) {
+                    item.classList.add('active');
+                } else {
+                    item.classList.remove('active');
+                }
+            });
+        }
+
+        window.addEventListener('scroll', checkExperiencePosition);
+        window.addEventListener('resize', checkExperiencePosition);
+        checkExperiencePosition();
+
+        window.addEventListener('resize', updateTexts);
+        updateTexts();
+
+        window.addEventListener('load', () => {
+            const nav = document.querySelector('nav');
+            const languages = document.getElementById('languages-section');
+            const aboutHeader = document.getElementById('about-header');
+            const aboutPara = document.getElementById('about-paragraph');
+
+            setTimeout(() => {
+                if (nav) nav.classList.add('visible');
+                if (languages) languages.classList.add('visible');
+                if (aboutHeader) aboutHeader.classList.add('visible');
+                if (aboutPara) aboutPara.classList.add('visible');
+            }, 100);
+        });
+    </script>
+</body>
+</html>
