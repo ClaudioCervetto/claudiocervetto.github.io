@@ -170,15 +170,13 @@
         .works-grid { 
             display: grid; 
             grid-template-columns: repeat(3, 1fr); 
-            gap: 0; /* Rimosso gap per unire i bordi se necessario, ma qui useremo bordi su wrapper */
-            /* Rimosso border-left globale per gestire bordi specifici sulle card */
+            gap: 0; 
         }
         
         .work-item { 
             text-decoration: none; 
             color: var(--text-color); 
             display: block; 
-            /* Rimosso border-right e bottom globali per controllo preciso */
             position: relative;
         }
         
@@ -189,13 +187,13 @@
             position: relative;
             overflow: hidden;
             
-            /* BORDI: Inizialmente bianchi, diventano neri all'hover */
-            border: 1px solid #ffffff; 
+            /* DESKTOP DEFAULT: Bordo NERO, diventa BIANCO all'hover */
+            border: 1px solid #000000; 
             transition: border-color 0.25s ease;
         }
         
         .work-item:hover .work-image-wrapper {
-            border-color: #000000;
+            border-color: #ffffff;
         }
 
         /* Gestione Immagini Sovrapposte */
@@ -209,11 +207,11 @@
             transition: opacity 0.25s ease;
         }
 
-        /* Logica Desktop: Default vedi cop1 (img-1), cop2 nascosta */
+        /* Logica Desktop: Default vedi cop2 (che ora è img-1) */
         .work-img-1 { opacity: 1; z-index: 1; }
         .work-img-2 { opacity: 0; z-index: 2; }
 
-        /* All'hover su Desktop: nascondi cop1, mostra cop2 */
+        /* All'hover su Desktop: nascondi cop2, mostra cop1 (che ora è img-2) */
         .work-item:hover .work-img-1 { opacity: 0; }
         .work-item:hover .work-img-2 { opacity: 1; }
         
@@ -223,8 +221,6 @@
             display: flex; 
             flex-direction: column; 
             font-size: 0.85rem; 
-            /* Aggiungo bordo inferiore al testo per mantenere la griglia visuale se desiderato, 
-               ma la richiesta specifica bordi sull'immagine. Lascio pulito il testo. */
             border-bottom: 1px solid transparent; 
         }
         .work-meta-row { display: flex; justify-content: space-between; }
@@ -258,11 +254,23 @@
     .work-item { margin-bottom: 20px; }
 
     /* LOGICA IMMAGINI TABLET/MOBILE: Sempre Cop2 */
-    .work-img-1 { display: none; } /* Nascondi cop1 */
-    .work-img-2 { opacity: 1; position: relative; } /* Mostra cop2 statica */
+    /* img-1 nel codice corrisponde a src="...cop2.webp" */
+    .work-img-1 { 
+        display: block; 
+        opacity: 1 !important; 
+        position: relative; 
+    }
+    
+    /* Nascondiamo cop1 (img-2) */
+    .work-img-2 { 
+        display: none; 
+        opacity: 0 !important; 
+    } 
 
     /* LOGICA BORDI TABLET/MOBILE: Sempre Neri */
-    .work-image-wrapper { border-color: #000000; }
+    .work-image-wrapper { 
+        border-color: #000000 !important; 
+    }
 }
 
 /* --- MOBILE OPTIMIZATIONS (Max 850px) --- */
@@ -348,8 +356,8 @@
             
             <a href="pages/woowe.html" target="_blank" class="work-item">
                 <div class="work-image-wrapper">
-                    <img src="assets/img/woowe_cop1.webp" alt="Woowe Cover 1" class="work-img-1">
-                    <img src="assets/img/woowe_cop2.webp" alt="Woowe Cover 2" class="work-img-2">
+                    <img src="assets/img/woowe_cop2.webp" alt="Woowe Cover 2" class="work-img-1">
+                    <img src="assets/img/woowe_cop1.webp" alt="Woowe Cover 1" class="work-img-2">
                 </div>
                 <div class="work-meta">
                     <div class="work-meta-row"><div class="work-title uppercase">WOOWE</div><div>2025</div></div>
@@ -359,8 +367,8 @@
 
             <a href="pages/awear.html" target="_blank" class="work-item">
                 <div class="work-image-wrapper">
-                    <img src="assets/img/awear_cop1.webp" alt="Awear Cover 1" class="work-img-1">
-                    <img src="assets/img/awear_cop2.webp" alt="Awear Cover 2" class="work-img-2">
+                    <img src="assets/img/awear_cop2.webp" alt="Awear Cover 2" class="work-img-1">
+                    <img src="assets/img/awear_cop1.webp" alt="Awear Cover 1" class="work-img-2">
                 </div>
                 <div class="work-meta">
                     <div class="work-meta-row"><div class="work-title uppercase">AWEAR</div><div>2025</div></div>
@@ -370,8 +378,8 @@
 
             <a href="pages/toulì.html" target="_blank" class="work-item">
                 <div class="work-image-wrapper">
-                    <img src="assets/img/touli_cop1.webp" alt="Touli Cover 1" class="work-img-1">
-                    <img src="assets/img/touli_cop2.webp" alt="Touli Cover 2" class="work-img-2">
+                    <img src="assets/img/touli_cop2.webp" alt="Touli Cover 2" class="work-img-1">
+                    <img src="assets/img/touli_cop1.webp" alt="Touli Cover 1" class="work-img-2">
                 </div>
                 <div class="work-meta">
                     <div class="work-meta-row"><div class="work-title uppercase">Toulì</div><div>2025</div></div>
