@@ -64,7 +64,7 @@
         .language-selector span:hover .lang-text { transform: translateY(-100%); }
         .language-selector span:hover::before { transform: translateY(-100%); }
         
-        .nav-copyright { letter-spacing: -0.03em; font-weight: 500; position: relative; top: -4px; }
+        .nav-copyright { letter-spacing: -0.03em; font-weight: 500; position: relative; top: -4px; text-decoration: none; color: var(--text-color); cursor: pointer; }
 
         .nav-links { display: flex; gap: 15px; list-style: none; }
         .nav-links a { color: var(--text-color); text-decoration: none; font-size: 1rem; font-weight: 500; position: relative; display: inline-block; overflow: hidden; cursor: pointer; }
@@ -408,7 +408,7 @@
 </head>
 <body>
     <nav>
-        <span class="nav-copyright">©2026 Claudio Cervetto</span>
+        <a href="index.html" class="nav-copyright">©2026 Claudio Cervetto</a>
         <div class="nav-right">
             <div class="language-selector">
                 <span class="lang-ita active" onclick="switchLanguage('ita')" data-text="Ita"><span class="lang-text">Ita</span></span>
